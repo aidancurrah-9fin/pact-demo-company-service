@@ -1,0 +1,30 @@
+name: Run service tests
+description: Run the tests in the provider service.
+
+inputs:
+  broker-token:
+    description: Pact broker bearer token
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create virtual environment
+      id: create-venv
+      shell: bash
+      run: python -m venv .venv
+
+    - name: Activate virtual environment
+      id: activate-venv
+      shell: bash
+      run: . .venv/bin/activate
+
+    - name: Install python packages
+      id: setup-venv
+      shell: bash
+      run: pip install -r requirements.txt
+
+    - name: Run tests
+      id: run-tests
+      shell: bash
+      run: PACT_BROKER_TOKEN=${{ inputs.broker-token }} pytest .

@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  pact-version: "2.6.0"
+  deploy-environment: "production"
+  pact-broker-url: "https://9fin.pactflow.io"
+  service-name: "company-service"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+
+      - name: Install PactCLI
+        uses: ./.github/actions/install-broker
+        with:
+          pact-version: ${{ env.pact-version }}
+
+      - name: Set GIT_HEAD_REF environment variable
+        run: echo "GIT_HEAD_REF=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Check deploy is safe
+        uses: ./.github/actions/can-i-deploy
+        with:
+          service-name: ${{ env.service-name }}
+          service-version: $GIT_HEAD_REF
+          environment: ${{ env.deploy-environment }}
+          broker-url: ${{ env.pact-broker-url }}
+          broker-token: ${{ secrets.PACT_BROKER_TOKEN_RO }}
+
+      - name: Mark service as deployed
+        uses: ./.github/actions/record-deploy
+        with:
+          service-name: ${{ env.service-name }}
+          service-version: $GIT_HEAD_REF
+          environment: ${{ env.deploy-environment }}
+          broker-url: ${{ env.pact-broker-url }}
+          broker-token: ${{ secrets.PACT_BROKER_TOKEN }}
+

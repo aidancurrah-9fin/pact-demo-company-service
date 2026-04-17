@@ -1,0 +1,18 @@
+name: Install PactCLI
+description: Installs the PactCLI which contains the pact-broker commands
+
+inputs:
+  pact-version:
+    description: Version of PactCLI to use
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install pact broker
+      id: install-broker
+      shell: bash
+      run: | 
+        curl -LO https://github.com/pact-foundation/pact-standalone/releases/download/v${{ inputs.pact-version }}/pact-${{ inputs.pact-version }}-linux-x86_64.tar.gz
+        tar xzf pact-${{ inputs.pact-version }}-linux-x86_64.tar.gz
+        echo "$HOME/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/pact/bin/" >> $GITHUB_PATH

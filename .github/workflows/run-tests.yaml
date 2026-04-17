@@ -1,0 +1,37 @@
+name: Run tests
+
+on:
+  workflow_dispatch:
+
+env:
+  pact-version: "2.6.0"
+  pact-broker-url: "https://9fin.pactflow.io"
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install PactCLI
+        uses: ./.github/actions/install-broker
+        with:
+          pact-version: ${{ env.pact-version }}
+
+      - name: Set GIT_HEAD_REF environment variable
+        run: echo "GIT_HEAD_REF=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Generate Consumer pacts
+        uses: ./.github/actions/run-service-tests
+
+      - name: Publish pacts
+        run: pact-broker publish ./pacts --consumer-app-version $GIT_HEAD_REF --broker-base-url ${{ env.pact-broker-url }} --broker-token ${{ secrets.PACT_BROKER_TOKEN }}

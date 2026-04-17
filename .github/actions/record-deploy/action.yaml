@@ -1,0 +1,27 @@
+name: Records service release
+description: Records the release of a new version of the service in the pact broker
+
+inputs:
+  service-name:
+    description: Name of the service being deployed
+    required: true
+  service-version:
+    description: Version of the service being deployed
+    required: true
+  environment:
+    description: Environment being deployed to
+    required: true
+  broker-url:
+    description: Pact broker URL
+    required: true
+  broker-token:
+    description: Pact broker bearer token
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Record service deployment in broker
+      id: record-deployment
+      shell: bash
+      run: pact-broker record-deployment --pacticipant ${{ inputs.service-name }} --version ${{ inputs.service-version }} --environment ${{ inputs.environment }} --broker-base-url ${{ inputs.broker-url }} --broker-token ${{ inputs.broker-token }}

@@ -1,0 +1,27 @@
+name: Check if service is valid to release
+description: Uses the pact-broker can-i-deploy command to verify compatibility
+
+inputs:
+  service-name:
+    description: Name of the service being deployed
+    required: true
+  service-version:
+    description: Version of the service being deployed
+    required: true
+  environment:
+    description: Environment being deployed to
+    required: true
+  broker-url:
+    description: Pact broker URL
+    required: true
+  broker-token:
+    description: Pact broker bearer token
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run can-i-deploy
+      id: can-i-deploy
+      shell: bash
+      run: pact-broker can-i-deploy --pacticipant ${{ inputs.service-name }} --version ${{ inputs.service-version }} --to-environment ${{ inputs.environment }} --broker-base-url ${{ inputs.broker-url }} --broker-token ${{ inputs.broker-token }}

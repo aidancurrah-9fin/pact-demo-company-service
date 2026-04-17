@@ -32,6 +32,8 @@ jobs:
 
       - name: Generate Consumer pacts
         uses: ./.github/actions/run-service-tests
+        with:
+          pact-broker-token: ${{ secrets.PACT_BROKER_TOKEN }}
 
       - name: Publish pacts
         run: pact-broker publish ./pacts --consumer-app-version $GIT_HEAD_REF --broker-base-url ${{ env.pact-broker-url }} --broker-token ${{ secrets.PACT_BROKER_TOKEN }}

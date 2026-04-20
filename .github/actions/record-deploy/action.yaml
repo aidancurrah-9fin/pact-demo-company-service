@@ -24,8 +24,10 @@ runs:
     - name: Record service deployment in broker
       id: record-deployment
       shell: bash
-      run: pact-broker record-deployment --pacticipant ${{ inputs.service-name }} \
-                                         --version ${{ inputs.service-version }} \
-                                         --environment ${{ inputs.environment }} \
-                                         --broker-base-url ${{ inputs.broker-url }} \
-                                         --broker-token ${{ inputs.broker-token }}
+      run: |
+        pact-broker record-deployment \
+          --pacticipant ${{ inputs.service-name }} \
+          --version ${{ inputs.service-version }} \
+          --environment ${{ inputs.environment }} \
+          --broker-base-url ${{ inputs.broker-url }} \
+          --broker-token ${{ inputs.broker-token }}

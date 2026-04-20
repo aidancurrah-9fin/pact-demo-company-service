@@ -24,8 +24,10 @@ runs:
     - name: Run can-i-deploy
       id: can-i-deploy
       shell: bash
-      run: pact-broker can-i-deploy --pacticipant ${{ inputs.service-name }} \
-                                    --version ${{ inputs.service-version }} \
-                                    --to-environment ${{ inputs.environment }} \
-                                    --broker-base-url ${{ inputs.broker-url }} \
-                                    --broker-token ${{ inputs.broker-token }}
+      run: |
+        pact-broker can-i-deploy \
+          --pacticipant ${{ inputs.service-name }} \
+          --version ${{ inputs.service-version }} \
+          --to-environment ${{ inputs.environment }} \
+          --broker-base-url ${{ inputs.broker-url }} \
+          --broker-token ${{ inputs.broker-token }}

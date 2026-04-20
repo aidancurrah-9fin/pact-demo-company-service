@@ -73,7 +73,7 @@ def test_provider(
         .state_handler(state_handlers, teardown=True)
     )
 
-    if "pact-broker-url" in os.environ:
+    if "CI" in os.environ:
         verifier.broker_source(
             os.environ["pact-broker-url"], token=os.environ["PACT_BROKER_TOKEN"]
         ).set_publish_options(

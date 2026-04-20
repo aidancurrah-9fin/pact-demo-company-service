@@ -14,6 +14,6 @@ def get_company_by_id(company_id: int) -> Company:
     company = settings.dbal.get_company(company_id=company_id)
 
     if company is None:
-        raise HTTPException(status_code=404, detail="Not found")
+        raise HTTPException(status_code=404, detail="Company not found")
 
     return company

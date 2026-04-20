@@ -30,4 +30,4 @@ runs:
     - name: Run tests
       id: run-tests
       shell: bash
-      run: PACT_BROKER_TOKEN=${{ inputs.pact-broker-token }} pytest .
+      run: PACT_BROKER_TOKEN=${{ inputs.pact-broker-token }} pytest ${{ inputs.tests-to-run }}

@@ -30,8 +30,8 @@ jobs:
       - name: Set GIT_HEAD_REF environment variable
         run: echo "GIT_HEAD_REF=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
-      - name: Run tests
+      - name: Verify pacts
         uses: ./.github/actions/run-service-tests
         with:
           pact-broker-token: ${{ secrets.PACT_BROKER_TOKEN }}
-          tests-to-run: .
+          tests-to-run: tests/test_pacts.py

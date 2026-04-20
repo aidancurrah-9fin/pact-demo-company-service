@@ -5,6 +5,9 @@ inputs:
   pact-broker-token:
     description: Pact broker bearer token
     required: true
+  tests-to-run:
+    description: Path to file we want to test
+    required: false
 
 runs:
   using: "composite"

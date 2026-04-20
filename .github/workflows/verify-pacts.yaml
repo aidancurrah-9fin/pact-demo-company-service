@@ -2,6 +2,9 @@ name: Verify Pacts
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types:
+      - pact-webhook
 
 env:
   pact-version: "2.6.0"

@@ -1,4 +1,4 @@
-name: Run tests
+name: Verify Pacts
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ env:
   pact-broker-url: "https://9fin.pactflow.io"
 
 jobs:
-  run-tests:
+  verify-pacts:
     runs-on: ubuntu-latest
 
     steps:
